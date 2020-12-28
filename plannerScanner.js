@@ -8,11 +8,34 @@ const rl = readline.createInterface({
 	output: process.stdout,
 })
 
+core()
+
+function core() {
+	ascertainBirthYear()
+}
+
 function ascertainBirthYear() {
 	rl.question(
 		"Hello. In what year were you born? (Answer format: YYYY) ",
 		(birthYear) => {
 			confirmBirthYear(birthYear)
+		}
+	)
+}
+
+function confirmBirthYear(birthYear) {
+	rl.question(
+		`Noted. You answered ${birthYear}. Is that correct? (Y/N) `,
+		(answer) => {
+			if (answer.toUpperCase() === "Y") {
+				var confirmedBirthYear = birthYear
+				ascertainBirthMonth()
+			} else if (answer.toUpperCase() === "N") {
+				reAscertainBirthYear()
+			} else {
+				// future home of more advanced questioning, instead of...
+				reAscertainBirthYear()
+			}
 		}
 	)
 }
@@ -24,23 +47,41 @@ function reAscertainBirthYear() {
 	})
 }
 
-function confirmBirthYear(birthYear) {
+function ascertainBirthMonth() {
 	rl.question(
-		`Noted. You answered ${birthYear}. Is that correct? (Y/N) `,
+		"Great! How about the month? What month were you born in? (MM) ",
+		(birthMonth) => {
+			confirmBirthMonth(birthMonth)
+		}
+	)
+}
+
+function confirmBirthMonth(birthMonth) {
+	rl.question(
+		`Got it. You answered ${birthMonth}. Is that correct? (Y/N) `,
 		(answer) => {
 			if (answer.toUpperCase() === "Y") {
-				// ascertainBirthMonth()
-				console.log("Proceeds to month")
+				var confirmedBirthMonth = birthMonth - 1 //months in JS Date class are zero-indexed
+				//ascertainBirthDate()
+				console.log("Temporary home of rl.close()!")
+				rl.close()
 			} else if (answer.toUpperCase() === "N") {
-				reAscertainBirthYear()
+				reAscertainBirthMonth()
 			} else {
-				confusedLackOfBirthYear(answer)
-				console.log(
-					"Asks new question asking if person is invested in process."
-				)
+				// future home of more advanced questioning, instead of...
+				reAscertainBirthMonth()
 			}
 		}
 	)
+}
+
+function reAscertainBirthMonth() {
+	console.log(
+		`That's okay. As an emotionless logic chain, I am blessed with infinite patience!`
+	)
+	rl.question("What month were you born in, though? (MM) ", (birthMonth) => {
+		confirmBirthMonth(birthMonth)
+	})
 }
 
 // And in what month? (Answer format: MM) ",
@@ -61,5 +102,4 @@ function confirmBirthYear(birthYear) {
 // 					)
 // 				}
 
-ascertainBirthYear()
 //rl.close() at end of every loop
