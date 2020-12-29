@@ -10,6 +10,8 @@ function main() {
 	let confirmedBirthYear
 	let confirmedBirthMonth
 	let confirmedBirthDate
+	let confirmedBirthDateObj
+	let confirmedPlannerStartDate
 	ascertainBirthYear()
 }
 
@@ -115,36 +117,60 @@ function reAscertainBirthDate() {
 //final confirm
 
 function finalConfirmation() {
-	const confirmedBirthday = new Date(
+	confirmedBirthDateObj = new Date(
 		confirmedBirthYear,
 		confirmedBirthMonth,
 		confirmedBirthDate
 	)
-	console.log(`Okay. You were born on ${confirmedBirthday.toDateString()}. `)
-	ascertainDesiredPlannerYear()
+	console.log(
+		`Okay. You were born on ${confirmedBirthDateObj.toDateString()}. `
+	)
+	ascertainPlannerYear()
 }
 
-function ascertainDesiredPlannerYear() {
-	console.log("Temporary home of rl.close().")
+//planner year
+
+function ascertainPlannerYear() {
+	rl.question(
+		`What year is the planner you'd like to populate? `,
+		(plannerYear) => {
+			confirmPlannerYear(plannerYear)
+		}
+	)
+}
+
+function confirmPlannerYear(plannerYear) {
+	rl.question(
+		`I have that we're looking forward to ${plannerYear}. Is that correct? (Y/N) `,
+		(answer) => {
+			if (answer.toUpperCase() === "Y") {
+				confirmedPlannerStartDate = new Date(plannerYear, 0, 1) //Jan 1st
+				calculateDates()
+			} else {
+				reAscertainPlannerYear()
+			}
+		}
+	)
+}
+
+function reAscertainPlannerYear() {
+	const currentYear = new Date().getYear()
+	console.log(
+		`It's okay - I'm sure you faced a lot of challenges in ${currentYear}. Take your time.`
+	)
+	rl.question(
+		"What year have you purchased a planner for? (YYYY) ",
+		(plannerYear) => {
+			confirmPlannerYear(plannerYear)
+		}
+	)
+}
+
+//calculate dates loop
+function calculateDates() {
+	console.log(`The birthday is ${confirmedBirthDateObj.toDateString()}`)
+	console.log(
+		`The confirmed planner start date is ${confirmedPlannerStartDate.toDateString()}`
+	)
 	rl.close()
 }
-
-// And in what month? (Answer format: MM) ",
-// 				(birthMonth) => {
-// 					rl.question(
-// 						"Fascinating. What about the date? (Answer format: DD) ",
-// 						(birthDate) => {
-// 							const fullBirthDate = new Date(
-// 								birthYear,
-// 								birthMonth - 1,
-// 								birthDate
-// 							)
-
-// 							console.log(
-// 								`Great! I have your details as ${fullBirthDate}`
-// 							)
-// 						}
-// 					)
-// 				}
-
-//rl.close() at end of every loop
