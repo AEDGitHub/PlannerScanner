@@ -172,5 +172,21 @@ function calculateDates() {
 	console.log(
 		`The confirmed planner start date is ${confirmedPlannerStartDate.toDateString()}`
 	)
+	const daysOld = calculateDifferenceBetweenTwoDatesInDays(
+		confirmedBirthDateObj,
+		confirmedPlannerStartDate
+	)
+	console.log(
+		`You will be ${daysOld} days old on the first of the year! Congratulations!`
+	) //works
 	rl.close()
+}
+
+function calculateDifferenceBetweenTwoDatesInDays(earlierDate, laterDate) {
+	const differenceInMilliseconds = laterDate - earlierDate
+	return convertMillisecondsToDays(differenceInMilliseconds)
+}
+
+function convertMillisecondsToDays(valueInMS) {
+	return valueInMS / (1000 * 60 * 60 * 24)
 }
