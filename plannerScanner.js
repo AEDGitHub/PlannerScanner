@@ -168,9 +168,11 @@ function reAscertainPlannerYear() {
 
 //calculate dates loop
 function calculateDates() {
-	console.log(`The birthday is ${confirmedBirthDateObj.toDateString()}`)
 	console.log(
-		`The confirmed planner start date is ${confirmedPlannerStartDate.toDateString()}`
+		`So, you were born on ${confirmedBirthDateObj.toDateString()}...`
+	)
+	console.log(
+		`...and the confirmed planner start date is ${confirmedPlannerStartDate.toDateString()}`
 	)
 	const daysOld = calculateDifferenceBetweenTwoDatesInDays(
 		confirmedBirthDateObj,
@@ -179,7 +181,28 @@ function calculateDates() {
 	console.log(
 		`You will be ${daysOld} days old on the first of the year! Congratulations!`
 	) //works
-	rl.close()
+	const plannerYearDateObj = constructPlannerYearDateObject(
+		confirmedBirthDateObj,
+		confirmedPlannerStartDate
+	)
+	console.log(plannerYearDateObj)
+}
+
+function constructPlannerYearDateObject(birthdayObj, plannerYearStartObj) {
+	const plannerYearDateObj = {}
+	const currentYear = plannerYearStartObj.getYear()
+	let movingDateObj = new Date(plannerYearStartObj.getTime())
+	while (movingDateObj.getYear() === currentYear) {
+		const key = calculateDifferenceBetweenTwoDatesInDays(
+			birthdayObj,
+			movingDateObj
+		)
+		plannerYearDateObj[key] = movingDateObj
+		let currentTime = movingDateObj.getTime()
+		let tomorrow = currentTime + 24 * 60 * 60 * 1000
+		movingDateObj = new Date(tomorrow)
+	}
+	return plannerYearDateObj
 }
 
 function calculateDifferenceBetweenTwoDatesInDays(earlierDate, laterDate) {
