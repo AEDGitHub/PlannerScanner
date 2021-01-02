@@ -185,7 +185,7 @@ function calculateDates() {
 		confirmedBirthDateObj,
 		confirmedPlannerStartDate
 	)
-	scanDateObjectForDaysDivisibleByTen(plannerYearDateObj)
+	scanDateObjectForImportantDates(plannerYearDateObj)
 	rl.close()
 }
 
@@ -215,11 +215,18 @@ function convertMillisecondsToDays(valueInMS) {
 	return valueInMS / (1000 * 60 * 60 * 24)
 }
 
-function scanDateObjectForDaysDivisibleByTen(dateObj) {
-	console.log(`Be sure to write journal entries on the following days: `)
+function scanDateObjectForImportantDates(dateObj) {
 	for (let key in dateObj) {
-		if (key[key.length - 1] === "0") {
-			console.log(`${key}: ${dateObj[key].toDateString()}`)
+		noteDateIfDivisibleByTen(key, dateObj)
+	}
+}
+
+function noteDateIfDivisibleByTen(key, dateObj) {
+	if (key[key.length - 1] === "0") {
+		let powerOfTen = 1
+		while (key[key.length - powerOfTen - 1] === "0") {
+			powerOfTen++
 		}
+		console.log(`Journal Entry, E${powerOfTen}: ${key}, ${dateObj[key]}`)
 	}
 }
