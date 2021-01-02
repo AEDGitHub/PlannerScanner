@@ -180,12 +180,13 @@ function calculateDates() {
 	)
 	console.log(
 		`You will be ${daysOld} days old on the first of the year! Congratulations!`
-	) //works
+	)
 	const plannerYearDateObj = constructPlannerYearDateObject(
 		confirmedBirthDateObj,
 		confirmedPlannerStartDate
 	)
-	console.log(plannerYearDateObj)
+	scanDateObjectForDaysDivisibleByTen(plannerYearDateObj)
+	rl.close()
 }
 
 function constructPlannerYearDateObject(birthdayObj, plannerYearStartObj) {
@@ -212,4 +213,13 @@ function calculateDifferenceBetweenTwoDatesInDays(earlierDate, laterDate) {
 
 function convertMillisecondsToDays(valueInMS) {
 	return valueInMS / (1000 * 60 * 60 * 24)
+}
+
+function scanDateObjectForDaysDivisibleByTen(dateObj) {
+	console.log(`Be sure to write journal entries on the following days: `)
+	for (let key in dateObj) {
+		if (key[key.length - 1] === "0") {
+			console.log(`${key}: ${dateObj[key].toDateString()}`)
+		}
+	}
 }
