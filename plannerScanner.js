@@ -218,6 +218,7 @@ function convertMillisecondsToDays(valueInMS) {
 function scanDateObjectForImportantDates(dateObj) {
 	for (let key in dateObj) {
 		noteDateIfDivisibleByTen(key, dateObj)
+		noteDateIfPalindromic(key, dateObj)
 	}
 }
 
@@ -227,6 +228,24 @@ function noteDateIfDivisibleByTen(key, dateObj) {
 		while (key[key.length - powerOfTen - 1] === "0") {
 			powerOfTen++
 		}
-		console.log(`Journal Entry, E${powerOfTen}: ${key}, ${dateObj[key]}`)
+		if (powerOfTen > 1) console.log()
+		console.log(
+			`Journal Entry, E${powerOfTen}: ${key}, ${dateObj[key].toDateString()}`
+		)
+	}
+}
+
+function noteDateIfPalindromic(key, dateObj) {
+	let firstIdx = 0
+	let lastIdx = key.length - 1
+	while (key[firstIdx] === key[lastIdx]) {
+		if (firstIdx === lastIdx) {
+			console.log(
+				`Palindromic Day! : ${key}, ${dateObj[key].toDateString()}`
+			)
+			break
+		}
+		firstIdx++
+		lastIdx--
 	}
 }
